@@ -18,7 +18,22 @@ import write from '@wrote/write'
       return `${main}\n${ws}"module": "src/index.js",`
     })
     .replace(/"version": ".+?"/, `"version": "${v}"`)
+    .replace(/"files": \[([\s\S]+?)\s+\]/, (_, files) => {
+      return `"files": [${files},\n    "src"\n  ]`
+    })
   await write('package.json', newPackage)
-  const sl = await read('CHANGELOG.md')
-  console.log(v)
+  const cl = await read('CHANGELOG.md')
+  const d = new Date()
+  const dd = `## ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`
+  const cll = cl.startsWith(dd) ? cl.replace(`${dd}\n\n`, '') : cl
+  const c = `${dd}
+
+### ${v}
+
+- [package] Add the "module" field
+
+${cll}`
+  await write('CHANGELOG.md', c)
 })()
+
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']

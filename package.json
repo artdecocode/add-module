@@ -19,6 +19,9 @@
     "e": "node example",
     "example/": "yarn e example/example.js"
   },
+  "bin": {
+    "addmodule": "src/bin/index.js"
+  },
   "files": [
     "build"
   ],
@@ -42,5 +45,9 @@
     "eslint-config-artdeco": "1.0.1",
     "yarn-s": "1.1.0",
     "zoroaster": "3.6.6"
+  },
+  "dependencies": {
+    "@wrote/read": "1.0.0",
+    "@wrote/write": "1.0.0"
   }
 }

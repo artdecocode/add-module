@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@wrote/read": "1.0.0",
-    "@wrote/write": "1.0.0"
+    "@wrote/write": "1.0.0",
+    "spawncommand": "2.1.0"
   }
 }

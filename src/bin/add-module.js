@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import read from '@wrote/read'
 import write from '@wrote/write'
+import spawn from 'spawncommand'
 
 (async () => {
   const packageJson = await read('package.json')
@@ -24,16 +25,19 @@ import write from '@wrote/write'
   await write('package.json', newPackage)
   const cl = await read('CHANGELOG.md')
   const d = new Date()
-  const dd = `## ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`
+  const month = d.toLocaleString('en-us', { month: 'long' })
+
+  const dd = `## ${d.getDate()} ${month} ${d.getFullYear()}`
   const cll = cl.startsWith(dd) ? cl.replace(`${dd}\n\n`, '') : cl
   const c = `${dd}
 
 ### ${v}
 
-- [package] Add the "module" field
+- [package] Add the "module" field.
 
 ${cll}`
   await write('CHANGELOG.md', c)
+  await spawn('git', ['commit', '-a', '-m', `c${v}`], {
+    stdio: 'inherit',
+  })
 })()
-
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
